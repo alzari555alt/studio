@@ -16,29 +16,16 @@
 </head>
 <body class="page-portfolio">
     <header class="navbar navbar-solid">
-        <div class="container nav-content">
-            <a href="index.html" class="logo-link">
+        <div class="container nav-content" style="justify-content: center;">
+            <a href="index.html" class="logo-link" aria-label="Volver al inicio">
                 <!-- Fallback to text if logo fails to load -->
-                <img src="assets/logo.png" alt="Emebe Logo" class="nav-logo" onerror="this.outerHTML='<span class=\'logo-text\'>Emebe</span>'">
+                <img src="assets/logo.png" alt="Emebe Logo" class="nav-logo" style="view-transition-name: main-logo;" onerror="this.outerHTML='<span class=\'logo-text\'>Emebe</span>'">
             </a>
-            <nav class="nav-links">
-                <a href="index.html#estudio">Estudio</a>
-                <a href="index.html#competencias">Competencias</a>
-                <a href="index.html#contacto" class="btn-primary">Contacto</a>
-            </nav>
         </div>
     </header>
 
     <main class="portfolio-main">
-        <section class="portfolio-header">
-            <div class="container text-center">
-                <span class="subtitle">Nuestro Trabajo</span>
-                <h1>Portafolio</h1>
-                <p class="large-text">Una selección de proyectos diseñados con propósito y funcionalidad, destacando la esencia del diseño minimalista.</p>
-            </div>
-        </section>
-
-        <section class="portfolio-content container">
+        <section class="portfolio-content container" style="padding-top: 10rem;">
             <div id="gallery-container" class="portfolio-grid">
                 <!-- Data will be populated via JS -->
             </div>
@@ -96,10 +83,6 @@
             const modalImages = document.getElementById('modal-images');
             const modalTitle = document.getElementById('modal-title');
             const modalDesc = document.getElementById('modal-desc');
-
-            // Set up view transition for the h1 element specifically to have it slide or morph nicely
-            const pageH1 = document.querySelector('.portfolio-header h1');
-            pageH1.style.viewTransitionName = 'page-title';
 
             // Close modal events
             closeBtn.addEventListener('click', () => {
