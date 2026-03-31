@@ -478,8 +478,8 @@ img {
 
 .portfolio-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
-  grid-auto-rows: 135px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  grid-auto-rows: 10px; /* Tamaño micro para cálculo granular de JS */
   grid-auto-flow: dense;
   gap: 1.5rem;
   margin-bottom: 6rem;
@@ -490,12 +490,21 @@ img {
   overflow: hidden;
   cursor: pointer;
   background-color: transparent;
+  /* El height automático inicial permite a JS leer la proporción */
+  height: max-content; 
+  /* Efecto fade-in para ocultar el salto cuando JS calcula el layout */
+  animation: fadeInGrid 0.8s ease forwards;
+}
+
+@keyframes fadeInGrid {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .grid-item .image-wrapper {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 100%; /* Forzamos full height luego de que JS fije el gridRowEnd de la celda */
   overflow: hidden;
   background-color: transparent;
 }
@@ -504,47 +513,38 @@ img {
   width: 100%;
   height: 100%;
   display: block;
-  object-fit: cover;
+  object-fit: cover; /* Recortará minimamente para rellenar la mini-fila más cercana */
   transition: transform 0.6s ease;
 }
 
-/* Configuraciones de Expansión Orgánica (Ratios fotográficos 1:1, 3:2, 2:3) */
+/* Configuraciones de Expansión Lateral */
 .format-square {
-  grid-column: span 2;
-  grid-row: span 2;
+  grid-column: span 1;
 }
 
-/* Aplicar la esquina redondeada sólo a cuadros perfectos */
 .format-square .image-wrapper {
+  aspect-ratio: 1 / 1;
   border-top-right-radius: 100%;
 }
 
 .format-portrait {
-  grid-column: span 2;
-  grid-row: span 3;
+  grid-column: span 1;
 }
 
 .format-landscape {
-  grid-column: span 3;
-  grid-row: span 2;
+  grid-column: span 2;
 }
 
-/* En dispositivos móviles, apilar ordenadamente y mantener proporciones nativas */
+/* En dispositivos móviles, forzamos 1 sola columna independientemente del formato */
 @media (max-width: 650px) {
   .portfolio-grid {
     grid-template-columns: 1fr;
-    grid-auto-rows: auto;
   }
   .format-square,
   .format-portrait,
   .format-landscape {
     grid-column: span 1;
-    grid-row: span 1;
   }
-  
-  .format-square .image-wrapper { aspect-ratio: 1 / 1; }
-  .format-portrait .image-wrapper { aspect-ratio: 3 / 4; }
-  .format-landscape .image-wrapper { aspect-ratio: 3 / 2; }
 }
 
 .grid-item:hover img {

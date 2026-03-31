@@ -149,12 +149,49 @@
                     });
 
                     container.appendChild(div);
+                    
+                    // Disparar redimensionamiento al cargar la foto
+                    const imgNode = div.querySelector('img');
+                    imgNode.addEventListener('load', () => {
+                        resizeGridItem(div, imgNode);
+                    });
                 });
 
             } catch (error) {
                 console.error("Error loading portfolio:", error);
                 container.innerHTML = '<p class="text-center" style="grid-column: 1 / -1;">No se pudo cargar el portafolio. Intenta más tarde.</p>';
             }
+
+            // JS Masonry Hack
+            function resizeGridItem(item, img) {
+                const rowHeight = 10;
+                const rowGap = 24; // 1.5rem = 24px
+                const gridColWidth = item.getBoundingClientRect().width;
+                
+                let targetHeight;
+                if (item.classList.contains('format-square')) {
+                    targetHeight = gridColWidth;
+                } else {
+                    const naturalRatio = img.naturalWidth / img.naturalHeight;
+                    if (!naturalRatio) return; 
+                    targetHeight = gridColWidth / naturalRatio;
+                }
+                
+                const rowSpan = Math.ceil((targetHeight + rowGap) / (rowHeight + rowGap));
+                item.style.gridRowEnd = "span " + rowSpan;
+            }
+
+            function resizeAllGridItems() {
+                const allItems = document.querySelectorAll('.grid-item');
+                allItems.forEach(item => {
+                    const img = item.querySelector('img');
+                    if(img && img.complete) {
+                        resizeGridItem(item, img);
+                    }
+                });
+            }
+
+            window.addEventListener('resize', resizeAllGridItems);
 
             function openModal(item, timestamp) {
                 modalTitle.textContent = item.title;
